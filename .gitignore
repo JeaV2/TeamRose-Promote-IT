@@ -1,0 +1,6 @@
+.idea
+.vscode
+*.zip
+*.pdf
+*.docx
+.DS_Store
