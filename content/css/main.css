@@ -16,3 +16,8 @@ nav {
         background-image: url('../../content/img/ohm-body-background.png');
     }
 }
+.pangolin-regular {
+  font-family: "Pangolin", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
