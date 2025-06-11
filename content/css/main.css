@@ -8,17 +8,14 @@ body {
 }
 nav {
     background: var(--nav-gradient);
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
 }
 
-.square {
-    background: var(--nav-gradient);
-    border-radius: 1em;
-}
 
 @media screen and (max-width: 768px) {
     body {
         background-image: url('../../content/img/ohm-body-background.png');
-        background-position: 50% 50%;
     }
 }
 .pangolin-regular {
