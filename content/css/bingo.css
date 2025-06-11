@@ -23,7 +23,6 @@
 
 .square.expanded {
     position: absolute;
-    /*transform: scale(1.5);*/
     width: 85vw;
     min-height: 150px;
     z-index: 1000;
