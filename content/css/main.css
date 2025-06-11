@@ -8,6 +8,8 @@ body {
 }
 nav {
     background: var(--nav-gradient);
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
 }
 
 
