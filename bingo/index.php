@@ -1,5 +1,7 @@
 <?php
-global$pdo;
+global $pdo;
+
+$vragenIds = [];
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -13,6 +15,14 @@ try {
 
     $resultaten = $stmt->fetchAll();
     $aantalRijen = count($resultaten);
+
+    // Random nummer generator voor de vragen.
+    if ($aantalRijen >= 16) {
+        $randomNumbers = range(1, $aantalRijen - 1);
+        shuffle($randomNumbers);
+        $vragenIds = array_slice($randomNumbers, 0, 16);
+    }
+
     cinfo('Query executed.');
 }
 catch (PDOException $e) {

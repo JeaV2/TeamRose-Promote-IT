@@ -1,4 +1,52 @@
+.pangolin-regular {
+    font-family: "Pangolin", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
 .square {
-    background: mediumvioletred;
-    border-radius: 1em;
+    border: 2px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(199, 21, 133, 0.5);
+    position: relative;
+}
+
+.square:hover {
+    background-color: #c71585;
+    transform: scale(1.05);
+}
+
+.square.expanded {
+    position: absolute;
+    /*transform: scale(1.5);*/
+    width: 85vw;
+    min-height: 150px;
+    z-index: 1000;
+    background-color: #c71585;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.1);
+    padding: 20px;
+}
+
+.task {
+    display: none;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #fff;
+    text-align: center;
+}
+
+.square.expanded .task {
+    display: block;
+}
+
+.task-number {
+    font-weight: bold;
+    font-size: 1.1em;
 }
