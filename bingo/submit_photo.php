@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
     $taskId = intval($_POST['task_id']);
 
     if (!$userId) {
-        echo json_encode(['success' => false, 'message' => 'Geen user gevonden']);
+        echo json_encode(['success' => false, 'message' => 'User not found']);
         exit;
     }
 
@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
     if (!in_array($file['type'], $allowedTypes)) {
-        echo json_encode(['success' => false, 'message' => 'Ongeldig bestandstype, alleen jpeg, png en gif zijn toegestaan.']);
+        echo json_encode(['success' => false, 'message' => 'Invalid file type']);
         exit;
     }
     if ($file['size'] > 5 * 1024 * 1024) {
-        echo json_encode(['success' => false, 'message' => 'Bestand is te groot, hou het kleiner dan 5MB.']);;
+        echo json_encode(['success' => false, 'message' => 'File too large']);
         exit;
     }
 
@@ -34,22 +34,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
 
     if (move_uploaded_file($file['tmp_name'], $filePath)) {
         try {
+            // Check if submission already exists
             $stmt = $pdo->prepare("SELECT id FROM task_submissions WHERE user_id = ? AND task_id = ?");
             $stmt->execute([$userId, $taskId]);
+
             if ($stmt->fetch()) {
+                // Update existing submission
                 $stmt = $pdo->prepare("UPDATE task_submissions SET photo_path = ?, submitted_at = CURRENT_TIMESTAMP WHERE user_id = ? AND task_id = ?");
                 $stmt->execute([$filePath, $userId, $taskId]);
             } else {
+                // Create new submission
                 $stmt = $pdo->prepare("INSERT INTO task_submissions (user_id, task_id, photo_path) VALUES (?, ?, ?)");
                 $stmt->execute([$userId, $taskId, $filePath]);
             }
-            echo json_encode(['success' => true, 'message' => 'Foto succesvol verwerkt']);
+
+            echo json_encode(['success' => true, 'message' => 'Photo submitted successfully']);
         } catch (PDOException $e) {
-            echo json_encode(['success' => false, 'message' => 'Fout bij verwerken van foto: ' . $e->getMessage()]);
+            echo json_encode(['success' => false, 'message' => 'Database error']);
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Fout bij uploaden van foto']);
+        echo json_encode(['success' => false, 'message' => 'Upload failed']);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Geen foto gevonden/Verkeerde request']);
+    echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }
