@@ -63,11 +63,11 @@ global $userTasksData;
                                 </div>
                                 <div class="submission-area">
                                     <?php if ($isSubmitted): ?>
-                                        <div class="submitted-indicator">✓ Submitted</div>
+                                        <div class="submitted-indicator">✅ Submitted</div>
                                         <small>Status: <?= ucfirst($task['status']) ?></small>
                                     <?php else: ?>
                                         <input type="file" class="form-control mt-2 photo-input" accept="image/*" style="display: none;">
-                                        <button class="btn btn-primary btn-sm mt-2 upload-btn">Upload Photo</button>
+                                        <button class="btn btn-primary btn-sm mt-2 upload-btn">Upload Foto!</button>
                                     <?php endif; ?>
                                 </div>
                             </div>

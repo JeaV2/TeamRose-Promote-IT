@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
     $taskId = intval($_POST['task_id']);
 
     if (!$userId) {
-        echo json_encode(['success' => false, 'message' => 'User not found']);
+        echo json_encode(['success' => false, 'message' => 'User niet gevonden']);
         exit;
     }
 
@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
     if (!in_array($file['type'], $allowedTypes)) {
-        echo json_encode(['success' => false, 'message' => 'Invalid file type']);
+        echo json_encode(['success' => false, 'message' => 'Onjuist bestandstype, geaccepteerde bestandstypen: ' . implode(', ', $allowedTypes)]);
         exit;
     }
     if ($file['size'] > 5 * 1024 * 1024) {
-        echo json_encode(['success' => false, 'message' => 'File too large']);
+        echo json_encode(['success' => false, 'message' => 'Bestand is te groot, maximaal 5MB']);
         exit;
     }
 
@@ -48,13 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
                 $stmt->execute([$userId, $taskId, $filePath]);
             }
 
-            echo json_encode(['success' => true, 'message' => 'Photo submitted successfully']);
+            echo json_encode(['success' => true, 'message' => 'Foto succesvol geupload']);
         } catch (PDOException $e) {
             echo json_encode(['success' => false, 'message' => 'Database error']);
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Upload failed']);
+        echo json_encode(['success' => false, 'message' => 'Upload gefaald']);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request']);
+    echo json_encode(['success' => false, 'message' => 'Onjuiste request']);
 }

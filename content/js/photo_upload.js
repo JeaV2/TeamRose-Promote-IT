@@ -34,13 +34,13 @@ function uploadPhoto(taskId, file, square) {
         .then(data => {
             if (data.success) {
                 square.classList.add('submitted');
-                square.querySelector('.submission-area').innerHTML = '<div class="submitted-indicator">✓ Submitted</div><small>Status: Pending</small>';
+                square.querySelector('.submission-area').innerHTML = '<div class="submitted-indicator">✅ Submitted</div><small>Status: Pending</small>';
             } else {
-                alert('Upload failed: ' + data.message);
+                alert('Upload mislukt: ' + data.message);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Upload failed');
+            alert('Upload mislukt.');
         });
 }
