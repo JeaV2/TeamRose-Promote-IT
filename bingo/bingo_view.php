@@ -45,74 +45,87 @@ global$aantalRijen;
         </div>
     </nav>
     <div class="container mt-4">
-        <div class="row">
-            <?php for ($i = 0; $i < 4; $i++): ?>
-                <div class="col-3">
-                    <div class="text-center p-4 square" onclick="toggleSquare(this)">
-                        <div>
-                            <div class="task-number">Task <?= $i + 1 ?></div>
-                            <div class="task">
-                                <?php
-                                $taskId = $vragenIds[$i];
-                                echo htmlspecialchars($resultaten[$taskId]['task']);
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endfor; ?>
-        </div>
+        <?php
+        $taskIndex = 0;
+        for ($row = 0; $row < 4; $row++): ?>
         <div class="row mt-2">
-            <?php for ($i = 4; $i < 8; $i++): ?>
-                <div class="col-3">
-                    <div class="text-center p-4 square" onclick="toggleSquare(this)">
-                        <div>
-                            <div class="task-number">Task <?= $i + 1 ?></div>
-                            <div class="task">
-                                <?php
-                                $taskId = $vragenIds[$i];
-                                echo htmlspecialchars($resultaten[$taskId]['task']);
-                                ?>
-                            </div>
+            <?php for ($col = 0; $col < 4; $col++):
+            $task = $userTaskData[$taskIndex];
+            $isSubmitted = !empty($task['photo_path']);
+            $statusClass = $isSubmitted ? 'submitted' : '';
+            ?>
+            <div class="col-3">
+                <div class="text-center p-4 square <?= $statusClass ?>" onclick="toggleSquare(this)" data-task-id="<?= $task['id'] ?>">
+                    <div>
+                        <div class="task-number">Task <?= $taskIndex + 1 ?></div>
+                        <div class="task">
+                            <?= htmlspecialchars($task['task']) ?>
+                        </div>
+                        <div class="submission-area">
+                            <?php if ($isSubmitted): ?>
+                            <div class="submitted-indicator">✅ Submitted!</div>
+                            <small>Status: <?= ucfirst($task['status']) ?></small>
+                            <?php else: ?>
+                            <input type="file" class="form-control mt-2 photo-input" accept="image/*" style="display: none;">
+                            <button class="btn btn-primary btn-sm mt-2 upload-btn">Upload foto!</button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
-            <?php endfor; ?>
+            </div>
+            <?php $taskIndex++; endfor; ?>
         </div>
-        <div class="row mt-2">
-            <?php for ($i = 8; $i < 12; $i++): ?>
-                <div class="col-3">
-                    <div class="text-center p-4 square" onclick="toggleSquare(this)">
-                        <div>
-                            <div class="task-number">Task <?= $i + 1 ?></div>
-                            <div class="task">
-                                <?php
-                                $taskId = $vragenIds[$i];
-                                echo htmlspecialchars($resultaten[$taskId]['task']);
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endfor; ?>
-        </div>
-        <div class="row mt-2">
-            <?php for ($i = 12; $i < 16; $i++): ?>
-                <div class="col-3">
-                    <div class="text-center p-4 square" onclick="toggleSquare(this)">
-                        <div>
-                            <div class="task-number">Task <?= $i + 1 ?></div>
-                            <div class="task">
-                                <?php
-                                $taskId = $vragenIds[$i];
-                                echo htmlspecialchars($resultaten[$taskId]['task']);
-                                ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endfor; ?>
-        </div>
+        <?php endfor;
+        ?>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.upload-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const square = this.closest('.square');
+                    const fileInput = square.querySelector('.photo-input');
+                    fileInput.click();
+                });
+            });
+
+            document.querySelectorAll('.photo-input').forEach(input => {
+                input.addEventListener('change', function() {
+                    const square = this.closest('.square');
+                    const taskId = square.dataset.taskId;
+                    const file = this.files[0];
+
+                    if (file) {
+                        uploadPhoto(taskId, file, square);
+                    }
+                });
+            });
+        });
+
+        function uploadPhoto(taskId, file, square) {
+            const formData = new FormData();
+            formData.append('photo', file);
+            formData.append('task_id', taskId);
+
+            fetch('submit_photo.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        square.classList.add('submitted');
+                        square.querySelector('.submission-area').innerHTML = '<div class="submitted-indicator">✓ Submitted</div><small>Status: Pending</small>';
+                    } else {
+                        alert('Upload failed: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Upload failed');
+                });
+        }
+    </script>
     </body>
 </html>
