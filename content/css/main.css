@@ -1,5 +1,6 @@
 :root {
     --nav-gradient: linear-gradient(to right, #DA86EF, #FE154A);
+    --nav-gradient-inverted: linear-gradient(to right, #FE154A, #DA86EF);
 }
 body {
     background-image: url('../../content/img/ohm-body-background.png');
@@ -11,7 +12,6 @@ nav {
     border-bottom-left-radius: 1em;
     border-bottom-right-radius: 1em;
 }
-
 
 @media screen and (max-width: 768px) {
     body {
