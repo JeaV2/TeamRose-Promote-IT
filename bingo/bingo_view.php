@@ -47,6 +47,7 @@ global $userTasksData;
     <div class="container mt-4">
         <?php 
         $taskIndex = 0;
+        // Make the 4x4 grid for the tasks
         for ($row = 0; $row < 4; $row++): ?>
             <div class="row mt-2">
                 <?php for ($col = 0; $col < 4; $col++): 
@@ -57,7 +58,7 @@ global $userTasksData;
                     <div class="col-3">
                         <div class="text-center p-4 square <?= $statusClass ?>" onclick="toggleSquare(this)" data-task-id="<?= $task['id'] ?>">
                             <div>
-                                <div class="task-number">Task <?= $taskIndex + 1 ?></div>
+                                <div class="task-number" <?= $taskIndex == 9 ? 'style="font-size: 1em;"' : '' ?>>Taak <?= $taskIndex + 1 ?></div>
                                 <div class="task">
                                     <?= htmlspecialchars($task['task']) ?>
                                 </div>

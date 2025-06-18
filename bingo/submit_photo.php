@@ -2,7 +2,7 @@
 session_start();
 require '../database/config.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_POST['task_id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_POST['task_id']) && in_array($_SERVER['HTTP_REFERER'], ['https://102710.stu.sd-lab.nl/promote-it-ohm/bingo/', 'https://102710.stu.sd-lab.nl/promote-it-ohm/bingo/index.php'])) {
     $userId = $_SESSION['user_id'] ?? null;
     $taskId = intval($_POST['task_id']);
 
@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
 
             if ($stmt->fetch()) {
                 // Update existing submission
+                //Normally should be unused because you can't send multiple photo's on the same task
                 $stmt = $pdo->prepare("UPDATE task_submissions SET photo_path = ?, submitted_at = CURRENT_TIMESTAMP WHERE user_id = ? AND task_id = ?");
                 $stmt->execute([$filePath, $userId, $taskId]);
             } else {
@@ -47,14 +48,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
                 $stmt = $pdo->prepare("INSERT INTO task_submissions (user_id, task_id, photo_path) VALUES (?, ?, ?)");
                 $stmt->execute([$userId, $taskId, $filePath]);
             }
-
             echo json_encode(['success' => true, 'message' => 'Foto succesvol geupload']);
         } catch (PDOException $e) {
-            echo json_encode(['success' => false, 'message' => 'Database error']);
+            echo json_encode(['success' => false, 'message' => 'Database error:'. $e->getMessage()]);
         }
     } else {
         echo json_encode(['success' => false, 'message' => 'Upload gefaald']);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Onjuiste request']);
+    echo json_encode(['success' => false, 'message' => 'Er is iets misgegaan, probeer het opnieuw.']);
 }

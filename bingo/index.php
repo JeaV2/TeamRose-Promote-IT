@@ -4,9 +4,6 @@ global $pdo;
 
 $vragenIds = [];
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 require '../database/config.php';
 
 try {
@@ -19,7 +16,6 @@ try {
     if (count($existingTasks) >= 16) {
         // User already has tasks assigned
         $vragenIds = array_column($existingTasks, 'task_id');
-        cinfo('Using existing tasks for user');
     } else {
         // Assign new tasks
         $query = "SELECT * FROM bingo_tasks";
@@ -42,8 +38,6 @@ try {
     
     // Get task data for display
     $userTasksData = getUserTasksWithData($userId);
-    
-    cinfo('Query executed.');
 }
 catch (PDOException $e) {
     cerror('Error: '.$e->getMessage());
@@ -74,6 +68,7 @@ function getUserId() {
 }
 
 function getUserTasks($userId) {
+    // Get tasks from db with user id
     global $pdo;
     
     $stmt = $pdo->prepare("SELECT task_id FROM user_tasks WHERE user_id = ?");
@@ -81,6 +76,7 @@ function getUserTasks($userId) {
     return $stmt->fetchAll();
 }
 
+// Save tasks assigned to user into db
 function saveUserTasks($userId, $taskIds) {
     global $pdo;
     
@@ -90,6 +86,8 @@ function saveUserTasks($userId, $taskIds) {
     }
 }
 
+//Witchcraft sql, it works, I don't remember how I did it.
+// But it gets all the tasks, and whether they have been submitted.
 function getUserTasksWithData($userId) {
     global $pdo;
     
@@ -105,7 +103,5 @@ function getUserTasksWithData($userId) {
     $stmt->execute([$userId]);
     return $stmt->fetchAll();
 }
-
-cinfo('Loaded index');
 
 include_once 'bingo_view.php';
