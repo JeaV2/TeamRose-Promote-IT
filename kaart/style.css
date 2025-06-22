@@ -1,7 +1,6 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      background: url(../content/img/ohm-body-background.png);
     }
 
     .map-container {
@@ -9,18 +8,18 @@
       width: 100%;
       max-width: 1000px;
       margin: 0 auto;
-      background-image: url('../content/img/festival-map.png');
+      background-image: url('/content/img/festival-map.png'); 
       background-size: cover;
       background-position: center;
       aspect-ratio: 16/9;
-      border: 2px solid #ff58d5;
+      border: 2px solid #bea4a4;
     }
 
     .marker {
       position: absolute;
       width: 20px;
       height: 20px;
-      border: 2px solid white;
+      border: 2px solid rgb(255, 239, 252);
       border-radius: 50%;
       cursor: pointer;
       transform: translate(-50%, -50%);
@@ -28,22 +27,47 @@
     }
 
     .marker.blue {
-      background-color: #00cfff;
+      background-color: #64e3ff;
     }
 
     .marker.red {
-      background-color: #ff3b3b;
+      background-color: #ff6363;
     }
 
+    .map-info {
+  background-color: #fff8f8;
+  border-left: 5px solid #ff8fab;
+  }
+#blue {
+  background-color: #64e3ff;
+  border-radius: 8px;
+  padding: 2px;
+  max-width: 400px;
+  margin: 20px auto;
+}
+#red {
+  background-color: #ff6363;
+  border-radius: 8px;
+  padding: 2px;
+  max-width: 400px;
+  margin: 20px auto;
+}
+#white {
+  background-color: #d2cdcd;
+  border-radius: 8px;
+  padding: 2px;
+  max-width: 400px;
+  margin: 20px auto;
+}
     .popup {
       position: absolute;
       top: 25px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgb(255, 218, 245);
+      background: rgb(255, 230, 230);
       padding: 6px 10px;
       border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       white-space: nowrap;
       opacity: 0;
       pointer-events: none;
@@ -63,4 +87,4 @@
         opacity: 1;
         pointer-events: auto;
       }
-    }
+    } 
