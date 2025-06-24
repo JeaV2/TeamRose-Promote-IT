@@ -8,7 +8,7 @@
       width: 100%;
       max-width: 1000px;
       margin: 0 auto;
-      background-image: url('/content/img/festival-map.png'); 
+      background-image: url('../content/img/festival-map.png');
       background-size: cover;
       background-position: center;
       aspect-ratio: 16/9;

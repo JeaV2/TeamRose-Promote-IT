@@ -57,8 +57,7 @@ h1 {
 }
 
 .square.expanded {
-    position: absolute;
-    width: 85vw;
+    position: absolute !important;
     min-height: 150px;
     z-index: 1000;
     background-color: #c71585;
@@ -66,6 +65,12 @@ h1 {
     left: 50%;
     transform: translate(-50%, -50%) scale(1.1);
     padding: 20px;
+}
+
+.square.collapsing {
+    position: absolute !important;
+    z-index: 1000;
+    transition: all 0.3s ease;
 }
 
 .task {

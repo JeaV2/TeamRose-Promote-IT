@@ -4,7 +4,18 @@ function toggleSquare(element) {
     allSquares.forEach(square => {
         if (square !== element) {
             square.classList.remove('expanded');
+            square.classList.remove('collapsing');
         }
     });
-    element.classList.toggle('expanded');
+    
+    if (element.classList.contains('expanded')) {
+        element.classList.add('collapsing');
+        element.classList.remove('expanded');
+
+        setTimeout(() => {
+            element.classList.remove('collapsing');
+        }, 300); // Match the CSS transition duration
+    } else {
+        element.classList.add('expanded');
+    }
 }
