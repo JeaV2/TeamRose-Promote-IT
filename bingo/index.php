@@ -92,7 +92,8 @@ function getUserTasksWithData($userId) {
     global $pdo;
     
     $stmt = $pdo->prepare("
-        SELECT bt.*, ut.id as user_task_id, ts.photo_path, ts.status, ts.submitted_at
+        SELECT bt.*, ut.id as user_task_id, 
+               ts.photo_path, ts.status, ts.submitted_at
         FROM user_tasks ut 
         JOIN bingo_tasks bt ON ut.task_id = bt.id 
         LEFT JOIN task_submissions ts ON ts.user_id = ut.user_id AND ts.task_id = ut.task_id

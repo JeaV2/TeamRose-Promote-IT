@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo']) && isset($_
             }
             echo json_encode(['success' => true, 'message' => 'Foto succesvol geupload']);
         } catch (PDOException $e) {
-            echo json_encode(['success' => false, 'message' => 'Database error:' . $e->getMessage()]);
+            echo json_encode(['success' => false, 'message' => 'Database error:'. $e->getMessage()]);
         }
     } else {
         echo json_encode(['success' => false, 'message' => 'Upload gefaald']);
